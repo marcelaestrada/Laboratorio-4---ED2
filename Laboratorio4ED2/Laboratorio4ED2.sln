@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Laboratorio4ED2", "Laborato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prueba compresion", "Prueba compresion\Prueba compresion.csproj", "{624827FB-1D5E-4533-A834-85A447658DA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZW", "LZW\LZW.csproj", "{B632C45C-BB4D-4217-B374-A661D843F5B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompresorLZW", "LZW\CompresorLZW.csproj", "{B632C45C-BB4D-4217-B374-A661D843F5B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
