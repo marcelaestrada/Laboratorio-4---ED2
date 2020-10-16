@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LZW.Estructuras
+namespace CompresorLZW.Estructuras
 {
-    public class Compresor
+    class LZW
     {
-        
     }
 }

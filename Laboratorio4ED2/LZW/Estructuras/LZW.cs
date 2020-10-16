@@ -4,7 +4,12 @@ using System.Text;
 
 namespace LZW.Estructuras
 {
-    class LZW
+    public class LZW
     {
+        public void Comprimir(string texto)
+        {
+            Compresor compresor = new Compresor();
+            compresor.DiccionarioOriginal(texto);
+        }
     }
 }

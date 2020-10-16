@@ -1,12 +1,18 @@
-﻿using System;
+﻿using CompresorLZW.Estructuras;
+using System;
+using System.IO;
 
 namespace Prueba_compresion
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            CompresorLZW.Estructuras.Compresor compresor = new CompresorLZW.Estructuras.Compresor();
+            FileStream file = new FileStream(@"C:\Users\marce\Desktop\2020\Semestre II 2020\Estructura de datos II\Laboratorio\Laboratorio-4---ED2\Laboratorio4ED2\Prueba compresion\Cuesta.txt", FileMode.Open, FileAccess.Read);
+            StreamReader lector = new StreamReader(file);
+            string texto = lector.ReadToEnd();
+            compresor.DiccionarioOriginal(texto);
         }
     }
 }
