@@ -6,7 +6,6 @@ namespace CompresorLZW.Estructuras
 {
     public class Compresor
     {
-
         /// <summary>
         /// Este método recibe un texto string, lo recorre buscando 
         /// los caracteres diferentes que haya y los agrega al 
@@ -97,9 +96,14 @@ namespace CompresorLZW.Estructuras
         /// <param name="cadenaIndex">Listado de enteros con el mensaje original</param> 
         /// <returns> La cadena de ceros y unos para convertir a bytes </returns>
 
-        private List<string> ListadoDeASCII(List<string> data)
+        private List<string> ListadoDeASCII(List<int> data)
         {
             List<string> resultado = new List<string>();
+            foreach(var item in data)
+            {
+                string binario = Convert.ToString(item, 2).PadLeft(8, '0');
+                resultado.Add(binario);
+            }
             return resultado;
         }
 
