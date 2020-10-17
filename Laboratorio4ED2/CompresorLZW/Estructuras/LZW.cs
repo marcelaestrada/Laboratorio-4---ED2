@@ -6,6 +6,21 @@ namespace CompresorLZW.Estructuras
 {
     class LZW
     {
+        /// <summary>
+        /// Convertir un listado den enteros (los index del mensaje) 
+        /// a una cadena de ceros y unos que repreenten el mensaje comprimido.
+        /// </summary>
+        /// <param name="cadenaDeIndex"> Listado con los index que remplazan los caracteres y fraces del mensaje </param>
+        /// <param name="minBitesDeMayor">Minimo de bites que necesita el número mayor para cer escrito en binario</param>
+        /// <returns></returns>
+        private string CadenaDeByteComprimidos(List<int> cadenaDeIndex, int minBitesDeMayor)
+        {
+            string resultado = "";
+            foreach (var item in cadenaDeIndex)
+                resultado += DecimalToPadBinaryString(item, minBitesDeMayor);
+
+            return resultado;
+        }
 
         /// <summary>
         /// Metodo que recive un elemento entero de la lista de enteros con elmensaje
@@ -27,21 +42,7 @@ namespace CompresorLZW.Estructuras
         /// <returns>Bites totales por index en el mensaje</returns>
         private int MinBitesValorMayor(int mayor) => Convert.ToString(mayor, 2).Length;
 
-        /// <summary>
-        /// Convertir un listado den enteros (los index del mensaje) 
-        /// a una cadena de ceros y unos que repreenten el mensaje comprimido.
-        /// </summary>
-        /// <param name="cadenaDeIndex"> Listado con los index que remplazan los caracteres y fraces del mensaje </param>
-        /// <param name="minBitesDeMayor">Minimo de bites que necesita el número mayor para cer escrito en binario</param>
-        /// <returns></returns>
-        private string CadenaDeByteComprimidos(List<int> cadenaDeIndex, int minBitesDeMayor)
-        {
-            string resultado = "";
-            foreach (var item in cadenaDeIndex)
-                resultado += DecimalToPadBinaryString(item, minBitesDeMayor);
 
-            return resultado;
-        }
 
         /// <summary>
         /// Cálculo de la cantidad de ceros que se agregarán al 
@@ -58,8 +59,60 @@ namespace CompresorLZW.Estructuras
         /// agregan al último byte del mensaje</param>
         /// <param name="cadenaVacia">Esta cadena SIEMPRE debe ser vacía</param>
         /// <returns></returns>
-        private string GenerarCerosExtra(int cantidadCerosExtra, string cadenaVacia = "") 
+        private string GenerarCerosExtra(int cantidadCerosExtra, string cadenaVacia = "")
                                             => cadenaVacia.PadRight(cantidadCerosExtra, '0');
+
+
+        /// <summary>
+        /// Este método utiliza el diccionario original para cifrar la cadena 
+        /// remplazando los caracteres y subcadenas por los index del diccionario 
+        /// original mientras se van agregando más sub cadenas al diccionario.
+        /// y remplazando sub cadenas por más index.
+        /// </summary>
+        /// <param name="original"> diccionario original</param>
+        /// <param name="mensaje">Cadena del mensaje</param>
+        /// <param name="ultimoIndex">valor de la ultima llave del diccioneario</param>
+        /// <returns></returns>
+        private List<int> CadenaAIndex(Dictionary<string, int> original, string mensaje, int ultimoIndex)
+        {
+            Dictionary<string, int> diccionario = original;
+            List<int> mensajeEnNumeros = new List<int>();
+
+            int i = 0;
+            while (i < mensaje.Length)
+            {
+                string auxiliar = mensaje[i].ToString();
+               //string auxiliarKey;
+                int j = i+1;
+                if (original.ContainsKey(auxiliar))
+                {
+                    while (original.ContainsKey(auxiliar))
+                    {
+                        auxiliar += mensaje[j];
+                        j++;
+                    }
+                    //auxiliar se va al diccionario al ser la nueva cadena que no está en el 
+                    diccionario.Add(auxiliar, ultimoIndex++);
+                    //diccionario[auxiliar - 1] que debe estar en el diccionario se agrega a la  lista de enteros
+                    int largoSubString = auxiliar.Length - 1;
+                    mensajeEnNumeros.Add(diccionario[auxiliar.Substring(0,largoSubString)]);
+
+                    i = j - 1;
+                    //o j
+
+                }
+                else
+                {
+                    original.Add(auxiliar, ultimoIndex + 1);
+                }
+
+            }
+
+            return mensajeEnNumeros;
+        }
+
+
+
 
     }
 }
