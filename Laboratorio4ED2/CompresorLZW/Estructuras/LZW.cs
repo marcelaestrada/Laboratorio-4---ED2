@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CompresorLZW.Estructuras
 {
-    class LZW
+    public class LZW
     {
         /// <summary>
         /// Convertir un listado den enteros (los index del mensaje) 
@@ -73,7 +73,7 @@ namespace CompresorLZW.Estructuras
         /// <param name="mensaje">Cadena del mensaje</param>
         /// <param name="ultimoIndex">valor de la ultima llave del diccioneario</param>
         /// <returns></returns>
-        private List<int> CadenaAIndex(Dictionary<string, int> original, string mensaje, int ultimoIndex)
+        public List<int> CadenaAIndex(Dictionary<string, int> original, string mensaje, int ultimoIndex)
         {
             Dictionary<string, int> diccionario = original;
             List<int> mensajeEnNumeros = new List<int>();
@@ -82,23 +82,32 @@ namespace CompresorLZW.Estructuras
             while (i < mensaje.Length)
             {
                 string auxiliar = mensaje[i].ToString();
-               //string auxiliarKey;
-                int j = i+1;
+                //string auxiliarKey;
+                int j = i + 1;
                 if (original.ContainsKey(auxiliar))
                 {
-                    while (original.ContainsKey(auxiliar))
+                    while (original.ContainsKey(auxiliar) && j < mensaje.Length)
                     {
                         auxiliar += mensaje[j];
                         j++;
                     }
-                    //auxiliar se va al diccionario al ser la nueva cadena que no está en el 
-                    diccionario.Add(auxiliar, ultimoIndex++);
-                    //diccionario[auxiliar - 1] que debe estar en el diccionario se agrega a la  lista de enteros
-                    int largoSubString = auxiliar.Length - 1;
-                    mensajeEnNumeros.Add(diccionario[auxiliar.Substring(0,largoSubString)]);
+                    if (!original.ContainsKey(auxiliar))
+                    {
 
-                    i = j - 1;
-                    //o j
+                        //auxiliar se va al diccionario al ser la nueva cadena que no está en el 
+                        diccionario.Add(auxiliar, ultimoIndex++);
+                        //diccionario[auxiliar - 1] que debe estar en el diccionario se agrega a la  lista de enteros
+                        int largoSubString = auxiliar.Length - 1;
+                        mensajeEnNumeros.Add(diccionario[auxiliar.Substring(0, largoSubString)]);
+
+                        i = j - 1;
+                    }
+                    else 
+                    {
+                        mensajeEnNumeros.Add(diccionario[auxiliar]);
+                        break;
+                    }
+
 
                 }
                 else
