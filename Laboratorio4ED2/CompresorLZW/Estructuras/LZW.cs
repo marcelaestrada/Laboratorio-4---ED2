@@ -43,5 +43,23 @@ namespace CompresorLZW.Estructuras
             return resultado;
         }
 
+        /// <summary>
+        /// Cálculo de la cantidad de ceros que se agregarán al 
+        /// ultimo byte de la cadena binaria. Este dato debe ir en la metadata de la compresión 
+        /// </summary>
+        /// <param name="cadenaBinaria">cadena obtenida del método de ceros y unos con el contenido total del mensaje</param>
+        /// <returns>Cantidad de ceros que se agregan al último byte</returns>
+        private int CantidadCerosExtra(string cadenaBinaria) => 8 - (cadenaBinaria.Length % 8);
+
+        /// <summary>
+        /// Cadena de ceros extra a concatenar a la cadena binaria del mensaje completo.
+        /// </summary>
+        /// <param name="cantidadCerosExtra">Cantidad entera de ceros que se le 
+        /// agregan al último byte del mensaje</param>
+        /// <param name="cadenaVacia">Esta cadena SIEMPRE debe ser vacía</param>
+        /// <returns></returns>
+        private string GenerarCerosExtra(int cantidadCerosExtra, string cadenaVacia = "") 
+                                            => cadenaVacia.PadRight(cantidadCerosExtra, '0');
+
     }
 }
