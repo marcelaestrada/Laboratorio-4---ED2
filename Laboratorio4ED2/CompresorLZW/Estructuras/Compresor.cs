@@ -38,28 +38,6 @@ namespace CompresorLZW.Estructuras
                 }
             }
 
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                evaluar = i;
-                cadena = bytes[i];
-                if (inicio.ContainsKey(cadena))
-                {
-                    do
-                    {
-                        if (!((evaluar + 1) < bytes.Length))
-                        {
-                            break;
-                        }
-                        cadena += bytes[evaluar + 1];
-                        evaluar = evaluar + 1;
-                    } while (inicio.ContainsKey(cadena));
-                }
-                if (!inicio.ContainsKey(cadena))
-                {
-                    inicio.Add(cadena, contador);
-                    contador++;
-                }
-            }
             return inicio;
         }
 
