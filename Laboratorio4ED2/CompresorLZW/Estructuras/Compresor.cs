@@ -122,7 +122,7 @@ namespace CompresorLZW.Estructuras
         /// </summary>
         /// <param name="cadenaBinaria">cadena obtenida del método de ceros y unos con el contenido total del mensaje</param>
         /// <returns>Cantidad de ceros que se agregan al último byte</returns>
-        private int CantidadCerosExtra(string cadenaBinaria) => 8 - (cadenaBinaria.Length % 8);
+        public int CantidadCerosExtra(string cadenaBinaria) => 8 - (cadenaBinaria.Length % 8);
 
         /// <summary>
         /// Convertir un listado de enteros a una cadena de 
@@ -163,7 +163,41 @@ namespace CompresorLZW.Estructuras
         /// agregan al último byte del mensaje</param>
         /// <param name="cadenaVacia">Esta cadena SIEMPRE debe ser vacía</param>
         /// <returns></returns>
-        private string GenerarCerosExtra(int cantidadCerosExtra, string cadenaVacia = "")
+        public string GenerarCerosExtra(int cantidadCerosExtra, string cadenaVacia = "")
                                             => cadenaVacia.PadRight(cantidadCerosExtra, '0');
+
+        /// <summary>
+        /// Divide el string en una lista de binarios
+        /// </summary>
+        /// <returns>Lista de binarios</returns>
+        public List<string> codigosSplit(int splitSize, string codigoBinario)
+        {
+            int stringLength = codigoBinario.Length;
+            List<string> codigos = new List<string>();
+            for (int i = 0; i < stringLength; i += splitSize)
+            {
+                if ((i + splitSize) <= stringLength)
+                {
+                    codigos.Add(codigoBinario.Substring(i, 8));
+                }
+                else
+                {
+                    codigos.Add(codigoBinario.Substring(i));
+                }
+            }
+            return codigos;
+        }
+
+        public int CadenaBinAInt(string cadenaBinaria)
+        {
+            int resultado = 0;
+
+            int[] baseDecimal = { 128, 64, 32, 16, 8, 4, 2, 1 };
+
+            for (int i = 0; i < 8; i++)
+                if (cadenaBinaria[i] == '1') resultado += baseDecimal[i];
+
+            return resultado;
+        }
     }
 }

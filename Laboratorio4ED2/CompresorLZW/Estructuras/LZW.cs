@@ -11,8 +11,11 @@ namespace CompresorLZW.Estructuras
         public string Comprimir(string cadena)
         {
             string comprimido = "";
+            string cadenaCeros = "";
             Compresor compresor = new Compresor();
-            List<int> mensajeNumeros = new List<int>(); 
+            List<int> mensajeNumeros = new List<int>();
+            List<int> paraASCII = new List<int>();
+            List<string> cadenaBinarios = new List<string>();
             Dictionary<string, int> diccionario = new Dictionary<string, int>();
             int minBitesMayor = 0;
 
@@ -20,8 +23,15 @@ namespace CompresorLZW.Estructuras
             mensajeNumeros = compresor.CadenaAIndex(diccionario, cadena, diccionario.Count);
             minBitesMayor = compresor.MinBitesValorMayor(mensajeNumeros.Max());
             comprimido = compresor.CadenaDeByteComprimidos(mensajeNumeros, minBitesMayor);
+            cadenaCeros = compresor.GenerarCerosExtra(compresor.CantidadCerosExtra(comprimido));
+            comprimido += cadenaCeros;
+            cadenaBinarios = compresor.codigosSplit(8, comprimido);
 
-            return comprimido;
+            foreach(var item in cadenaBinarios)
+            {
+                int numero = compresor.CadenaBinAInt(item);
+                paraASCII.Add(numero);
+            }
         }
 
         public string Descomprimir(string cadena)
