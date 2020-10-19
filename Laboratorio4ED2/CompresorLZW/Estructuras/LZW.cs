@@ -12,6 +12,7 @@ namespace CompresorLZW.Estructuras
         {
             string comprimido = "";
             string cadenaCeros = "";
+            string resultado = "";
             Compresor compresor = new Compresor();
             List<int> mensajeNumeros = new List<int>();
             List<int> paraASCII = new List<int>();
@@ -32,6 +33,13 @@ namespace CompresorLZW.Estructuras
                 int numero = compresor.CadenaBinAInt(item);
                 paraASCII.Add(numero);
             }
+
+            foreach(var item in paraASCII)
+            {
+                resultado += Convert.ToChar(item);
+            }
+
+            return resultado;
         }
 
         public string Descomprimir(string cadena)
