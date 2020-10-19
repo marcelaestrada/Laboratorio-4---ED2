@@ -49,7 +49,7 @@ namespace CompresorLZW.Estructuras
         /// </summary>
         /// <param name="original">Diccionario original</param> 
         /// <returns> Retorna un listado de enteros que representa el mensaje. </returns>
-        private List<int> CadenaAIndex(Dictionary<string, int> original, string mensaje, int ultimoIndex)
+        public List<int> CadenaAIndex(Dictionary<string, int> original, string mensaje, int ultimoIndex)
         {
             Dictionary<string, int> diccionario = original;
             List<int> mensajeEnNumeros = new List<int>();
@@ -114,7 +114,7 @@ namespace CompresorLZW.Estructuras
         /// </summary>
         /// <param name="mayor"></param>
         /// <returns>Bites totales por index en el mensaje</returns>
-        private int MinBitesValorMayor(int mayor) => Convert.ToString(mayor, 2).Length;
+        public int MinBitesValorMayor(int mayor) => Convert.ToString(mayor, 2).Length;
 
         /// <summary>
         /// Cálculo de la cantidad de ceros que se agregarán al 
@@ -130,7 +130,7 @@ namespace CompresorLZW.Estructuras
         /// </summary>
         /// <param name="cadenaIndex">Listado de enteros con el mensaje original</param> 
         /// <returns> La cadena de ceros y unos para convertir a bytes </returns>
-        private string CadenaDeByteComprimidos(List<int> cadenaDeIndex, int minBitesDeMayor)
+        public string CadenaDeByteComprimidos(List<int> cadenaDeIndex, int minBitesDeMayor)
         {
             string resultado = "";
             foreach (var item in cadenaDeIndex)
@@ -154,30 +154,6 @@ namespace CompresorLZW.Estructuras
                 resultado.Add(binario);
             }
             return resultado;
-        }
-
-        /// <summary>
-        /// Método que segun el int mayor
-        /// devuelve la cantidad de bites que va a ocupar cada index 
-        /// del mensaje original.<!-- -->
-        /// </summary>
-        /// <param name="mayor">Entero mayor del menseaje comprimido</param> 
-        /// <returns> Cantidad de bytes por cadena.<!-- --> </returns>
-        private int CantidadMenorDeBitesDeMayor(int mayor)
-        {
-            return 1;
-        }
-
-        /// <summary>
-        /// Metodo que recibe un elemento entero de la lista de enteros con elmensaje
-        /// y lo convierte a un entero de bits rellenado con los ceros del mayor numero 
-        /// de los que representan el mensaje.<!-- -->
-        /// </summary>
-        /// <param name="cadenaIndex">Listado de enteros con el mensaje original</param> 
-        /// <returns> La cadena de ceros y unos para convertir a bytes </returns>
-        private string DecimalACadenaConCerosExtra(int elementoIndex, int minBytesDeMayor)
-        {
-            return "";
         }
 
         /// <summary>
