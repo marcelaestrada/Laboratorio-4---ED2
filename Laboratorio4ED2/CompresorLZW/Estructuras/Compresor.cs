@@ -188,6 +188,10 @@ namespace CompresorLZW.Estructuras
             return codigos;
         }
 
+        /// <summary>
+        /// Este metodo recibe una cadena binaria y la convierte a un entero para poder convertir a ASCII
+        /// </summary>
+        /// <returns>Entero equivalente al binario recibido</returns>
         public int CadenaBinAInt(string cadenaBinaria)
         {
             int resultado = 0;
@@ -199,5 +203,6 @@ namespace CompresorLZW.Estructuras
 
             return resultado;
         }
+
     }
 }
