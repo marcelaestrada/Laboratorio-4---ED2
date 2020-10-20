@@ -45,10 +45,12 @@ namespace CompresorLZW.Estructuras
                 paraASCII.Add(numero);
             }
 
-            foreach(var item in paraASCII)
+
+            foreach (var item in paraASCII)
             {
                 resultado += Convert.ToChar(item);
             }
+        
 
             return resultado;
         }
@@ -73,8 +75,13 @@ namespace CompresorLZW.Estructuras
 
         public string Descomprimir(string comprimido)
         {
-            System.Text.ASCIIEncoding codificador = new System.Text.ASCIIEncoding();
-            byte[] bytesLinea = codificador.GetBytes(comprimido);
+            // System.Text.ASCIIEncoding codificador = new System.Text.ASCIIEncoding();
+            //byte[] bytesLinea = codificador.GetBytes(comprimido);
+            List<int> bytesLinea = new List<int>();
+            foreach (var item in comprimido)
+            {
+                bytesLinea.Add(Convert.ToInt32(item));
+            }
             List<int> recuperado = new List<int>();
             Dictionary<string, int> diccionarioRecuperado = new Dictionary<string, int>();
             string cadenaOriginal = "";
@@ -91,10 +98,14 @@ namespace CompresorLZW.Estructuras
             diccionarioRecuperado = compresor.DiccionarioOriginal(cadenaOriginal);
             compresor.CadenaAIndex(diccionarioRecuperado, cadenaOriginal, diccionarioRecuperado.Count);
 
-            for(int i = caracteres + 2; i < bytesLinea.Length; i++)
+            for(int i = caracteres + 2; i < bytesLinea.Count; i++)
             {
                 binario += Convert.ToString(bytesLinea[i], 2).PadLeft(8, '0');
             }
+
+            //Quitar los N Ceros al final de la cadena y dividir en la cantidad de bites del número mayor (Podría mandarse en la metadata)
+            //convertir esos grupos de ceros a su correlativo en entero para formar la cadena de números original
+            //Ir creando el diccionario para poder descomprimir... (revisar clase de descompresión)
 
 
             return descomprimido;
