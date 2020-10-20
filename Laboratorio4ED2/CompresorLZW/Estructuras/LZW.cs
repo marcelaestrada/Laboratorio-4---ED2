@@ -71,9 +71,34 @@ namespace CompresorLZW.Estructuras
             return lineaArchivo;
         }
 
-        public string Descomprimir(string cadena)
+        public string Descomprimir(string comprimido)
         {
-            throw new NotImplementedException();
+            System.Text.ASCIIEncoding codificador = new System.Text.ASCIIEncoding();
+            byte[] bytesLinea = codificador.GetBytes(comprimido);
+            List<int> recuperado = new List<int>();
+            Dictionary<string, int> diccionarioRecuperado = new Dictionary<string, int>();
+            string cadenaOriginal = "";
+            string descomprimido = "";
+            string binario = "";
+            int ceros = bytesLinea[0];
+            int caracteres = bytesLinea[1];
+
+            for (int i = 2; i <= caracteres+1; i++)
+            {
+                cadenaOriginal += Convert.ToChar(bytesLinea[i]);
+            }
+
+            diccionarioRecuperado = compresor.DiccionarioOriginal(cadenaOriginal);
+            compresor.CadenaAIndex(diccionarioRecuperado, cadenaOriginal, diccionarioRecuperado.Count);
+
+            for(int i = caracteres + 2; i < bytesLinea.Length; i++)
+            {
+                binario += Convert.ToString(bytesLinea[i], 2).PadLeft(8, '0');
+            }
+
+
+            return descomprimido;
+
         }
     }
 }

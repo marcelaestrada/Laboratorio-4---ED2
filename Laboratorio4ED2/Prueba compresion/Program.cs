@@ -17,7 +17,8 @@ namespace Prueba_compresion
             //var diccionarioOriginal = compresor.DiccionarioOriginal(texto);
 
             lZW.Comprimir("Marcela");
-            lZW.Archivo();
+            lZW.Descomprimir(lZW.Archivo());
+            
             
         }
     }
