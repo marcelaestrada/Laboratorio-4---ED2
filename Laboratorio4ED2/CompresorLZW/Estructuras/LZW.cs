@@ -103,6 +103,7 @@ namespace CompresorLZW.Estructuras
                 binario += Convert.ToString(bytesLinea[i], 2).PadLeft(8, '0');
             }
 
+
             //Quitar los N Ceros al final de la cadena y dividir en la cantidad de bites del número mayor (Podría mandarse en la metadata)
             //convertir esos grupos de ceros a su correlativo en entero para formar la cadena de números original
             //Ir creando el diccionario para poder descomprimir... (revisar clase de descompresión)
