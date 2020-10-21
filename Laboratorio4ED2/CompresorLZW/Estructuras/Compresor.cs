@@ -71,7 +71,8 @@ namespace CompresorLZW.Estructuras
                     {
 
                         //auxiliar se va al diccionario al ser la nueva cadena que no está en el 
-                        diccionario.Add(auxiliar, ultimoIndex++);
+                        ultimoIndex++;
+                        diccionario.Add(auxiliar, ultimoIndex);
                         //diccionario[auxiliar - 1] que debe estar en el diccionario se agrega a la  lista de enteros
                         int largoSubString = auxiliar.Length - 1;
                         mensajeEnNumeros.Add(diccionario[auxiliar.Substring(0, largoSubString)]);
