@@ -11,6 +11,7 @@ namespace CompresorLZW.Estructuras
         Compresor compresor = new Compresor();
         Dictionary<string, int> original = new Dictionary<string, int>();
         string resultado = "";
+        int minBitesMayor = 0;
         int ceros = 0;
 
         public string Comprimir(string cadena)
@@ -21,7 +22,6 @@ namespace CompresorLZW.Estructuras
             List<int> paraASCII = new List<int>();
             List<string> cadenaBinarios = new List<string>();
             Dictionary<string, int> diccionario = new Dictionary<string, int>();
-            int minBitesMayor = 0;
 
             diccionario = compresor.DiccionarioOriginal(cadena);
             
@@ -62,6 +62,7 @@ namespace CompresorLZW.Estructuras
 
             lineaArchivo += Convert.ToChar(ceros);
             lineaArchivo += Convert.ToChar(caracteres);
+            lineaArchivo += Convert.ToChar(minBitesMayor);
 
             foreach(var item in original)
             {
@@ -82,15 +83,21 @@ namespace CompresorLZW.Estructuras
             {
                 bytesLinea.Add(Convert.ToInt32(item));
             }
+
             List<int> recuperado = new List<int>();
             Dictionary<string, int> diccionarioRecuperado = new Dictionary<string, int>();
+            List<string> bitesLinea = new List<string>();
+            List<string> cadenaBinarios = new List<string>();
+            List<int> numeros = new List<int>();
             string cadenaOriginal = "";
             string descomprimido = "";
             string binario = "";
+            string cadena = "";
             int ceros = bytesLinea[0];
             int caracteres = bytesLinea[1];
+            int bites = bytesLinea[2];
 
-            for (int i = 2; i <= caracteres+1; i++)
+            for (int i = 3; i <= caracteres+2; i++)
             {
                 cadenaOriginal += Convert.ToChar(bytesLinea[i]);
             }
@@ -98,16 +105,39 @@ namespace CompresorLZW.Estructuras
             diccionarioRecuperado = compresor.DiccionarioOriginal(cadenaOriginal);
             compresor.CadenaAIndex(diccionarioRecuperado, cadenaOriginal, diccionarioRecuperado.Count);
 
-            for(int i = caracteres + 2; i < bytesLinea.Count; i++)
+            for(int i = caracteres + 3; i < bytesLinea.Count; i++)
             {
                 binario += Convert.ToString(bytesLinea[i], 2).PadLeft(8, '0');
             }
 
+            foreach(var item in binario)
+            {
+                bitesLinea.Add(Convert.ToString(item));
+            }
 
-            //Quitar los N Ceros al final de la cadena y dividir en la cantidad de bites del número mayor (Podría mandarse en la metadata)
-            //convertir esos grupos de ceros a su correlativo en entero para formar la cadena de números original
-            //Ir creando el diccionario para poder descomprimir... (revisar clase de descompresión)
+            for(int i = 0; i < binario.Length - ceros; i++)
+            {
+                cadena += binario[i];
+            }
 
+            cadenaBinarios = compresor.codigosSplit(bites, cadena);
+
+            foreach(var item in cadenaBinarios)
+            {
+                numeros.Add(Convert.ToInt32(item, 2));
+            }
+
+            for (int i = 0; i < numeros.Count; i++)
+            {
+                foreach(var item in diccionarioRecuperado)
+                {
+                    if (numeros[i].Equals(item.Value))
+                    {
+                        descomprimido += item.Key;
+                        break;
+                    }
+                }
+            }
 
             return descomprimido;
 

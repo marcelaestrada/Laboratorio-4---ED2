@@ -178,7 +178,7 @@ namespace CompresorLZW.Estructuras
             {
                 if ((i + splitSize) <= stringLength)
                 {
-                    codigos.Add(codigoBinario.Substring(i, 8));
+                    codigos.Add(codigoBinario.Substring(i, splitSize));
                 }
                 else
                 {

@@ -16,7 +16,7 @@ namespace Prueba_compresion
             //string texto = lector.ReadToEnd();
             //var diccionarioOriginal = compresor.DiccionarioOriginal(texto);
 
-            lZW.Comprimir("Marcela");
+            lZW.Comprimir("Joshua Valey");
             lZW.Descomprimir(lZW.Archivo());
             
             
