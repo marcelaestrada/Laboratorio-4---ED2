@@ -84,6 +84,7 @@ namespace CompresorLZW.Estructuras
                 bytesLinea.Add(Convert.ToInt32(item));
             }
 
+            Descompresor descompresor = new Descompresor();
             List<int> recuperado = new List<int>();
             Dictionary<string, int> diccionarioRecuperado = new Dictionary<string, int>();
             List<string> bitesLinea = new List<string>();
@@ -103,7 +104,6 @@ namespace CompresorLZW.Estructuras
             }
 
             diccionarioRecuperado = compresor.DiccionarioOriginal(cadenaOriginal);
-            compresor.CadenaAIndex(diccionarioRecuperado, cadenaOriginal, diccionarioRecuperado.Count);
 
             for(int i = caracteres + 3; i < bytesLinea.Count; i++)
             {
@@ -126,6 +126,8 @@ namespace CompresorLZW.Estructuras
             {
                 numeros.Add(Convert.ToInt32(item, 2));
             }
+
+            descompresor.reconstruirDiccionario(diccionarioRecuperado, numeros);
 
             for (int i = 0; i < numeros.Count; i++)
             {
