@@ -16,7 +16,7 @@ namespace Prueba_compresion
             //string texto = lector.ReadToEnd();
             //var diccionarioOriginal = compresor.DiccionarioOriginal(texto);
 
-            lZW.Comprimir("Ya esta casi listo el descompresor");
+            lZW.Comprimir("Lo veo bastante bien, ya casi funciona, tengo que revisarlo aun");
             lZW.Descomprimir(lZW.Archivo());
             
             

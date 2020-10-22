@@ -47,6 +47,8 @@ namespace CompresorLZW.Estructuras
                     contador++;
                     union = anterior += actual;
                     agregados.Add(contador, union);
+                    KeyValuePair<int, string> valorNuevo = new KeyValuePair<int, string>(contador, union);
+                    listaDiccionario.Add(valorNuevo);
                     anterior = actual;
                     actual = "";
                 }
