@@ -16,6 +16,8 @@ namespace CompresorLZW.Estructuras
 
         public string Comprimir(string cadena)
         {
+            string vacio = " ";
+            cadena = cadena.Replace("\r\n", "\n");
             string comprimido = "";
             string cadenaCeros = "";
             List<int> mensajeNumeros = new List<int>();
@@ -127,18 +129,13 @@ namespace CompresorLZW.Estructuras
                 numeros.Add(Convert.ToInt32(item, 2));
             }
 
-            descompresor.reconstruirDiccionario(diccionarioRecuperado, numeros);
+           var newDic =  descompresor.reconstruirDiccionario(diccionarioRecuperado, numeros);
+            int flag = 0;
 
-            for (int i = 0; i < numeros.Count; i++)
+            
+            foreach (var item in numeros)
             {
-                foreach(var item in diccionarioRecuperado)
-                {
-                    if (numeros[i].Equals(item.Value))
-                    {
-                        descomprimido += item.Key;
-                        break;
-                    }
-                }
+                descomprimido += newDic[item];
             }
 
             return descomprimido;

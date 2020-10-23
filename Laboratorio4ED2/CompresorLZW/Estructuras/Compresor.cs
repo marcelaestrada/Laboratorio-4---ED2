@@ -17,14 +17,20 @@ namespace CompresorLZW.Estructuras
         public Dictionary<string, int> DiccionarioOriginal(string texto)
         {
             Dictionary<string, int> inicio = new Dictionary<string, int>();
-            System.Text.ASCIIEncoding codificador = new System.Text.ASCIIEncoding();
-            byte[] bytesLinea = codificador.GetBytes(texto);
+            /*System.Text.ASCIIEncoding codificador = new System.Text.ASCIIEncoding();*/
+            //byte[] bytesLinea = codificador.GetBytes(texto);
+            List<byte> bytesLinea = new List<byte>();
+            for(int i = 0; i < texto.Length; i++)
+            {
+                bytesLinea.Add(Convert.ToByte(texto[i]));
+            }
+
             string cadena;
             int contador = 1;
             int evaluar = 0;
-            string[] bytes = new string[bytesLinea.Length];
+            string[] bytes = new string[bytesLinea.Count];
 
-            for (int i = 0; i < bytesLinea.Length; i++)
+            for (int i = 0; i < bytesLinea.Count; i++)
             {
                 bytes[i] += Convert.ToChar(bytesLinea[i]);
             }
@@ -54,45 +60,51 @@ namespace CompresorLZW.Estructuras
             Dictionary<string, int> diccionario = original;
             List<int> mensajeEnNumeros = new List<int>();
 
-            int i = 0;
+            string anterior = "";
+            string siguiente;
+            
+
+            int i  = 0;
             while (i < mensaje.Length)
             {
-                string auxiliar = mensaje[i].ToString();
-                //string auxiliarKey;
-                int j = i + 1;
-                if (original.ContainsKey(auxiliar))
+                siguiente = mensaje[i].ToString();
+                if (diccionario.ContainsKey(anterior + siguiente))
                 {
-                    while (original.ContainsKey(auxiliar) && j < mensaje.Length)
-                    {
-                        auxiliar += mensaje[j];
-                        j++;
-                    }
-                    if (!original.ContainsKey(auxiliar))
-                    {
-
-                        //auxiliar se va al diccionario al ser la nueva cadena que no está en el 
-                        ultimoIndex++;
-                        diccionario.Add(auxiliar, ultimoIndex);
-                        //diccionario[auxiliar - 1] que debe estar en el diccionario se agrega a la  lista de enteros
-                        int largoSubString = auxiliar.Length - 1;
-                        mensajeEnNumeros.Add(diccionario[auxiliar.Substring(0, largoSubString)]);
-
-                        i = j - 1;
-                    }
-                    else
-                    {
-                        mensajeEnNumeros.Add(diccionario[auxiliar]);
-                        break;
-                    }
-
-
+                    anterior += siguiente;
+                   
                 }
                 else
                 {
-                    original.Add(auxiliar, ultimoIndex + 1);
+                    //agregar la cadena más larga que existe + 1 caracter
+                    diccionario.Add(anterior + siguiente, ++ultimoIndex);
+                    //Agregar cadena más larga que existe al listado de números
+                    mensajeEnNumeros.Add(diccionario[anterior]);
+                    //moverse un caracter
+                    anterior = siguiente;
+                    
                 }
-
+                i++;
             }
+            mensajeEnNumeros.Add(diccionario[anterior]);
+
+
+            //Prueba de descompresion:
+            string numerosString = "";
+           
+            var nuevoDic = new Dictionary<int, string>();
+            foreach (var item in diccionario)
+            {
+                nuevoDic.Add(item.Value, item.Key);
+            }
+
+            string descompresionPrueba = "";
+
+            foreach (var item in mensajeEnNumeros)
+            {
+                descompresionPrueba += nuevoDic[item];
+                numerosString += item + ",";
+            }
+           
 
             return mensajeEnNumeros;
         }
