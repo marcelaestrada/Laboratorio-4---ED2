@@ -12,11 +12,12 @@ namespace Laboratorio4ED2.Controllers
     [Route("api")]
     public class LZWController : Controller
     {
-        LZW compresorLZW = new LZW();
+        //LZW compresorLZW = new LZW();
 
         [HttpPost("compress/{name}")]
         public async Task<IActionResult> Compress([FromForm] IFormFile file, string name)
         {
+            LZW compresorLZW = new LZW();
             string nombre = $"./{name}.lzw";
             try
             {
@@ -41,8 +42,9 @@ namespace Laboratorio4ED2.Controllers
 
                 // return StatusCode(201);
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 return StatusCode(500);
             }
         }
@@ -50,7 +52,7 @@ namespace Laboratorio4ED2.Controllers
         [HttpPost("decompress")]
         public async Task<IActionResult> Decompress([FromForm] IFormFile file)
         {
-            LZW descompresor = new LZW();
+            LZW compresorLZW = new LZW();
             try
             {
                 string nombre = file.FileName;
@@ -75,7 +77,7 @@ namespace Laboratorio4ED2.Controllers
         [HttpPost("compressions")]
         public async Task<string> Compressions()
         {
-            return compresorLZW.JSONCompresiones();
+            return null;/*compresorLZW.JSONCompresiones();*/
         }
     }
 }

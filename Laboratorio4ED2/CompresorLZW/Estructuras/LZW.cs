@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using System.Text.Json;
+using Laboratorio4ED2;
 
 namespace CompresorLZW.Estructuras
 {
@@ -145,34 +146,25 @@ namespace CompresorLZW.Estructuras
         public void llenarJSON()
         {
             string nombre = $"./compresiones.txt";
-            FileStream filestream = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            StreamReader rd = new StreamReader(filestream);
+            FileStream filestream = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.Write);
             StreamWriter documento = new StreamWriter(filestream);
-            string recuperado = "";
-
-            listaJSON.Add(nombreOriginal);
-            listaJSON.Add(nombreComprimido);
-            listaJSON.Add(rutaf);
-            listaJSON.Add(Convert.ToString(Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal),2)));
-            listaJSON.Add(Convert.ToString(Math.Round(Decimal.Divide(bytesOriginal, bytesComprimido),2)));
-            listaJSON.Add(Convert.ToString(Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal) * 100,2)));
-
-            if (rd.ReadToEnd() != null)
+            var registro = new RegistroCompress
             {
-                recuperado = rd.ReadToEnd();
-                foreach (var item in listaJSON)
-                {
-                    documento.WriteLine(item);
-                }
-            }
-            else
-            {
-                foreach(var item in listaJSON)
-                {
-                    documento.WriteLine(item);
-                }
-            }
+                NombreOriginal = nombreOriginal,
+                NombreComprimido = nombreComprimido,
+                RutaF = rutaf,
+                RazonCompresion = Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal), 2),
+                FactorCompresion = Math.Round(Decimal.Divide(bytesOriginal, bytesComprimido), 2),
+                PorcentajeReduccion = Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal) * 100, 2)
+            };
+
+            string escribir = registro.ToString();
+            documento.WriteLine(escribir);
             documento.Close();
+            
+            filestream.Close();
+
+          
         }
     }
 }
