@@ -14,8 +14,8 @@ namespace Prueba_compresion
             //FileStream file = new FileStream(@"C:\Users\Usuario DELL\Desktop\4to semestre 2020\Estructura de datos II\LAB\Laboratorio-4---ED2\Laboratorio4ED2\Prueba compresion\Cuesta.txt", FileMode.Open, FileAccess.Read);
             StreamReader lector = new StreamReader(file);
             string texto = lector.ReadToEnd();
-            var diccionarioOriginal = lZW.Comprimir(texto);
-
+            var diccionarioOriginal = lZW.Comprimir(texto, "MARCE", "MARCE2", "PRUEBAPRUEBA");
+            lZW.NombreOriginal();
             string desc = lZW.Descomprimir(lZW.Archivo("marce"));
         }
     }

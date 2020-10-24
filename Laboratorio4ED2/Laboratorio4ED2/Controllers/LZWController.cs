@@ -12,10 +12,11 @@ namespace Laboratorio4ED2.Controllers
     [Route("api")]
     public class LZWController : Controller
     {
+        LZW compresorLZW = new LZW();
+
         [HttpPost("compress/{name}")]
         public async Task<IActionResult> Compress([FromForm] IFormFile file, string name)
         {
-            LZW compresor = new LZW();
             string nombre = $"./{name}.lzw";
             try
             {
@@ -30,14 +31,10 @@ namespace Laboratorio4ED2.Controllers
                     while (reader.Peek() >= 0)
                         texto.AppendLine(await reader.ReadLineAsync());
                 }
-                compresor.Comprimir(texto.ToString());
-                documento.WriteLine(compresor.Archivo(nombreOriginal));
+                compresorLZW.Comprimir(texto.ToString(), file.FileName, name, nombre);
+                documento.WriteLine(compresorLZW.Archivo(nombreOriginal));
                 string fileType = "text/plain";
-                //documento.Close();
-                /*  return new FileStreamResult(filestream, fileType)
-                  {
-                      FileDownloadName = nombre
-                  };*/
+               
                 var fileResult = File(filestream, fileType, nombre);
                 //documento.Close();
                 return fileResult;
@@ -62,16 +59,23 @@ namespace Laboratorio4ED2.Controllers
                 StreamReader rd = new StreamReader(fileRecuperado);
 
 
-                string textoDescomprimido = descompresor.Descomprimir(rd.ReadToEnd());
-                string nombreOriginal = descompresor.NombreOriginal();
+                string textoDescomprimido = compresorLZW.Descomprimir(rd.ReadToEnd());
+                string nombreOriginal = ""; /*descompresor.NombreOriginal();*/
                 string fileType = "text/plain";
                 var fileResult = File(fileRecuperado, fileType, nombreOriginal);
                 return fileResult;
+
             }
             catch
             {
                 return StatusCode(500);
             }
+        }
+
+        [HttpPost("compressions")]
+        public async Task<string> Compressions()
+        {
+            return compresorLZW.JSONCompresiones();
         }
     }
 }

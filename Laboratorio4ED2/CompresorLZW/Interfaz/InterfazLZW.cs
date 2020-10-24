@@ -6,9 +6,10 @@ namespace CompresorLZW.Interfaz
 {
     interface InterfazLZW
     {
-        string Comprimir(string cadena);
+        string Comprimir(string cadena, string nombre, string nombreNuevo, string ruta);
         string Archivo(string nombre);
-        string NombreOriginal();
+        void llenarJSON();
         string Descomprimir(string cadena);
+        string JSONCompresiones();
     }
 }
