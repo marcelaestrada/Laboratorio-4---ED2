@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CompresorLZW.Estructuras;
 using System.Text;
+using System.Security.Cryptography.Xml;
 
 namespace Laboratorio4ED2.Controllers
 {
@@ -74,10 +75,11 @@ namespace Laboratorio4ED2.Controllers
             }
         }
 
-        [HttpPost("compressions")]
-        public async Task<string> Compressions()
+        [HttpGet("compressions")]
+        public string Compressions()
         {
-            return null;/*compresorLZW.JSONCompresiones();*/
+            LZW lzw = new LZW();
+            return lzw.GetAllCompress();
         }
     }
 }

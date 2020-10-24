@@ -143,6 +143,33 @@ namespace CompresorLZW.Estructuras
 
         }
 
+        public string GetAllCompress()
+        {
+            string ruta = $"./compresiones.txt";
+            FileStream filestream = new FileStream(ruta, FileMode.Open, FileAccess.Read);
+            StreamReader fileReader = new StreamReader(filestream);
+            var listaRegistros = new List<RegistroCompress>();
+            
+            while (!fileReader.EndOfStream)
+            {
+                string line = fileReader.ReadLine();
+                var values = line.Split("|");
+                var registro = new RegistroCompress
+                {
+                    NombreOriginal = values[0],
+                    NombreComprimido = values[1],
+                    RutaF = values[2],
+                    RazonCompresion = Convert.ToDecimal(values[3]),
+                    FactorCompresion = Convert.ToDecimal(values[4]),
+                    PorcentajeReduccion = Convert.ToDecimal(values[5])
+                };
+                listaRegistros.Add(registro);
+            }
+            string jsonRegistros = JsonConvert.SerializeObject(listaRegistros);
+            return jsonRegistros;
+
+        }
+
         public void llenarJSON()
         {
             string nombre = $"./compresiones.txt";
