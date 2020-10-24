@@ -16,13 +16,20 @@ namespace Prueba_compresion
             string texto = lector.ReadToEnd();
             var diccionarioOriginal = lZW.Comprimir(texto);
 
-            //lZW.Comprimir("Muy buenos dias jovenes, como estan?");
-            //lZW.Comprimir("Guatemala feliz...! que tus aras no profane jamás el verdugo; ni haya esclavos que laman el yugo ni tiranos que escupan tu faz." +
-               //"Si mañana tu suelo sagrado lo amenaza invasión extranjera, libre al viento tu hermosa bandera a vencer o a morir llamará.");
+             lZW.Comprimir("Guatemala feliz...! que tus aras no profane jamás el verdugo; ni haya esclavos que laman el yugo ni tiranos que escupan tu faz." +
+                "Si mañana tu suelo sagrado lo amenaza invasión extranjera, libre al viento tu hermosa bandera a vencer o a morir llamará." +
+                "Guatemala feliz...! que tus aras no profane jamás el verdugo; ni haya esclavos que laman el yugo ni tiranos que escupan tu faz." +
+                "Si mañana tu suelo sagrado lo amenaza invasión extranjera, libre al viento tu hermosa bandera a vencer o a morir llamará." +
+                "Guatemala feliz...! que tus aras no profane jamás el verdugo; ni haya esclavos que laman el yugo ni tiranos que escupan tu faz." +
+                "Si mañana tu suelo sagrado lo amenaza invasión extranjera, libre al viento tu hermosa bandera a vencer o a morir llamará." +
+                "Guatemala feliz...! que tus aras no profane jamás el verdugo; ni haya esclavos que laman el yugo ni tiranos que escupan tu faz." +
+                "Si mañana tu suelo sagrado lo amenaza invasión extranjera, libre al viento tu hermosa bandera a vencer o a morir llamará." +
+                "Guatemala feliz...! que tus aras no profane jamás el verdugo; ni haya esclavos que laman el yugo ni tiranos que escupan tu faz." +
+                "Si mañana tu suelo sagrado lo amenaza invasión extranjera, libre al viento tu hermosa bandera a vencer o a morir llamará.");
+
           
            string desc = lZW.Descomprimir(lZW.Archivo());
 
-            int flag = 0;
         }
     }
 }
