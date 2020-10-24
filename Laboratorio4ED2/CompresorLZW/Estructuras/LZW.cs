@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace CompresorLZW.Estructuras
 {
@@ -10,13 +11,22 @@ namespace CompresorLZW.Estructuras
     {
         Compresor compresor = new Compresor();
         Dictionary<string, int> original = new Dictionary<string, int>();
+        List<DatosCompresion> listaJSON = new List<DatosCompresion>();
         string resultado = "";
         string nombreOriginal;
+        string nombreComprimido;
+        string rutaf;
         int minBitesMayor = 0;
         int ceros = 0;
+        int bytesOriginal = 0;
+        int bytesComprimido = 0;
 
-        public string Comprimir(string cadena)
+        public string Comprimir(string cadena, string nombre, string nuevoNombre, string ruta)
         {
+            bytesOriginal = Encoding.ASCII.GetBytes(cadena).Length;
+            nombreOriginal = nombre;
+            nombreComprimido = nuevoNombre;
+            rutaf = ruta;
             string comprimido = "";
             string cadenaCeros = "";
             List<int> mensajeNumeros = new List<int>();
@@ -51,8 +61,9 @@ namespace CompresorLZW.Estructuras
             {
                 resultado += Convert.ToChar(item);
             }
-        
 
+            bytesComprimido = Encoding.ASCII.GetBytes(resultado).Length;
+            llenarJSON();
             return resultado;
         }
 
@@ -92,7 +103,6 @@ namespace CompresorLZW.Estructuras
             string cadenaOriginal = "";
             string binario = "";
             string cadena = "";
-            string nombreOriginal = "";
             int ceros = bytesLinea[0];
             int caracteres = bytesLinea[1];
             int bites = bytesLinea[2];
@@ -130,9 +140,23 @@ namespace CompresorLZW.Estructuras
 
         }
 
-        public string NombreOriginal()
+        public void llenarJSON()
         {
-            return nombreOriginal;
+            DatosCompresion datos = new DatosCompresion();
+            datos.nombreOriginal = nombreOriginal;
+            datos.nombreComprimido = nombreComprimido;
+            datos.rutaComprimido = rutaf;
+            datos.razonCompresion = Decimal.Divide(bytesComprimido, bytesOriginal);
+            datos.factorCompresion = decimal.Divide(bytesOriginal, bytesComprimido);
+            datos.porcentajeCompresion = datos.razonCompresion * 100;
+            listaJSON.Add(datos);
+        }
+
+        public string JSONCompresiones()
+        {
+            string jsons = "";
+            jsons = JsonSerializer.Serialize(listaJSON);
+            return jsons;
         }
     }
 }
