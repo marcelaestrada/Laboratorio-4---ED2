@@ -13,16 +13,17 @@ namespace Laboratorio4ED2.Controllers
     public class LZWController : Controller
     {
         [HttpPost("compress/{name}")]
-        public async Task<ActionResult> Compress([FromForm] IFormFile file, string name)
+        public async Task<IActionResult> Compress([FromForm] IFormFile file, string name)
         {
             LZW compresor = new LZW();
             string nombre = $"./{name}.lzw";
-            FileStream filestream = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            StreamWriter documento = new StreamWriter(filestream);
-            string nombreOriginal = file.FileName;
-
             try
             {
+                FileStream filestream = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                StreamWriter documento = new StreamWriter(filestream);
+                string nombreOriginal = file.FileName;
+
+
                 var texto = new StringBuilder();
                 using (var reader = new StreamReader(file.OpenReadStream()))
                 {
@@ -31,8 +32,17 @@ namespace Laboratorio4ED2.Controllers
                 }
                 compresor.Comprimir(texto.ToString());
                 documento.WriteLine(compresor.Archivo(nombreOriginal));
-                documento.Close();
-                return StatusCode(201);
+                string fileType = "text/plain";
+                //documento.Close();
+                /*  return new FileStreamResult(filestream, fileType)
+                  {
+                      FileDownloadName = nombre
+                  };*/
+                var fileResult = File(filestream, fileType, nombre);
+                //documento.Close();
+                return fileResult;
+
+                // return StatusCode(201);
             }
             catch
             {
@@ -41,19 +51,22 @@ namespace Laboratorio4ED2.Controllers
         }
 
         [HttpPost("decompress")]
-        public async Task<ActionResult> Decompress([FromForm] IFormFile file)
+        public async Task<IActionResult> Decompress([FromForm] IFormFile file)
         {
             LZW descompresor = new LZW();
-            string nombre = file.FileName;
-            string path = $"./{nombre}";
-            FileStream fileRecuperado = new FileStream(path, FileMode.Open, FileAccess.Read);
-            StreamReader rd = new StreamReader(fileRecuperado);
-
             try
             {
+                string nombre = file.FileName;
+                string path = $"./{nombre}";
+                FileStream fileRecuperado = new FileStream(path, FileMode.Open, FileAccess.Read);
+                StreamReader rd = new StreamReader(fileRecuperado);
+
+
                 string textoDescomprimido = descompresor.Descomprimir(rd.ReadToEnd());
                 string nombreOriginal = descompresor.NombreOriginal();
-                return StatusCode(201);
+                string fileType = "text/plain";
+                var fileResult = File(fileRecuperado, fileType, nombreOriginal);
+                return fileResult;
             }
             catch
             {
