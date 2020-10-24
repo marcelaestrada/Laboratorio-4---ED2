@@ -38,8 +38,8 @@ namespace CompresorLZW.Estructuras
             Dictionary<string, int> diccionario = new Dictionary<string, int>();
 
             diccionario = compresor.DiccionarioOriginal(cadena);
-            
-            foreach(var item in diccionario)
+
+            foreach (var item in diccionario)
             {
                 original.Add(item.Key, item.Value);
             }
@@ -53,7 +53,7 @@ namespace CompresorLZW.Estructuras
             cadenaBinarios = compresor.codigosSplit(8, comprimido);
 
 
-            foreach(var item in cadenaBinarios)
+            foreach (var item in cadenaBinarios)
             {
                 int numero = compresor.CadenaBinAInt(item);
                 paraASCII.Add(numero);
@@ -79,7 +79,7 @@ namespace CompresorLZW.Estructuras
             lineaArchivo += Convert.ToChar(caracteres);
             lineaArchivo += Convert.ToChar(minBitesMayor);
 
-            foreach(var item in original)
+            foreach (var item in original)
             {
                 lineaArchivo += Convert.ToChar(item.Key);
             }
@@ -110,31 +110,31 @@ namespace CompresorLZW.Estructuras
             int caracteres = bytesLinea[1];
             int bites = bytesLinea[2];
 
-            for (int i = 3; i <= caracteres +2; i++) 
+            for (int i = 3; i <= caracteres + 2; i++)
             {
                 cadenaOriginal += Convert.ToChar(bytesLinea[i]);
             }
 
             diccionarioRecuperado = compresor.DiccionarioOriginal(cadenaOriginal);
 
-            for(int i = caracteres + 3; i < bytesLinea.Count; i++)
+            for (int i = caracteres + 3; i < bytesLinea.Count; i++)
             {
                 binario += Convert.ToString(bytesLinea[i], 2).PadLeft(8, '0');
             }
 
-            foreach(var item in binario)
+            foreach (var item in binario)
             {
                 bitesLinea.Add(Convert.ToString(item));
             }
 
-            for(int i = 0; i < binario.Length - ceros; i++)
+            for (int i = 0; i < binario.Length - ceros; i++)
             {
                 cadena += binario[i];
             }
 
             cadenaBinarios = compresor.codigosSplit(bites, cadena);
 
-            foreach(var item in cadenaBinarios)
+            foreach (var item in cadenaBinarios)
             {
                 numeros.Add(Convert.ToInt32(item, 2));
             }
@@ -149,7 +149,7 @@ namespace CompresorLZW.Estructuras
             FileStream filestream = new FileStream(ruta, FileMode.Open, FileAccess.Read);
             StreamReader fileReader = new StreamReader(filestream);
             var listaRegistros = new List<RegistroCompress>();
-            
+
             while (!fileReader.EndOfStream)
             {
                 string line = fileReader.ReadLine();
@@ -173,25 +173,54 @@ namespace CompresorLZW.Estructuras
         public void llenarJSON()
         {
             string nombre = $"./compresiones.txt";
-            FileStream filestream = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.Write);
-            StreamWriter documento = new StreamWriter(filestream);
-            var registro = new RegistroCompress
+            try
             {
-                NombreOriginal = nombreOriginal,
-                NombreComprimido = nombreComprimido,
-                RutaF = rutaf,
-                RazonCompresion = Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal), 2),
-                FactorCompresion = Math.Round(Decimal.Divide(bytesOriginal, bytesComprimido), 2),
-                PorcentajeReduccion = Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal) * 100, 2)
-            };
+                FileStream filestream = new FileStream(nombre, FileMode.Append, FileAccess.Write);
+                StreamWriter documento = new StreamWriter(filestream);
+                var registro = new RegistroCompress
+                {
+                    NombreOriginal = nombreOriginal,
+                    NombreComprimido = nombreComprimido,
+                    RutaF = rutaf,
+                    RazonCompresion = Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal), 2),
+                    FactorCompresion = Math.Round(Decimal.Divide(bytesOriginal, bytesComprimido), 2),
+                    PorcentajeReduccion = Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal) * 100, 2)
+                };
 
-            string escribir = registro.ToString();
-            documento.WriteLine(escribir);
-            documento.Close();
-            
-            filestream.Close();
+                string escribir = registro.ToString();
+                documento.WriteLine(escribir);
+                documento.Close();
 
-          
+                filestream.Close();
+
+            }
+            catch (Exception)
+            {
+
+                throw new Exception();
+            }
+           
+
+        }
+
+        public string NombreOriginal(string nombreComprimido)
+        {
+            string retorno = "default.txt";
+            string ruta = $"./compresiones.txt";
+            FileStream filestream = new FileStream(ruta, FileMode.Open, FileAccess.Read);
+            StreamReader fileReader = new StreamReader(filestream);
+
+            while (!fileReader.EndOfStream)
+            {
+                string linea = fileReader.ReadLine();
+                if (linea.Contains(nombreComprimido))
+                {
+                    var array = linea.Split("|");
+                    retorno = array[0];
+                }
+            }
+
+            return retorno;
         }
     }
 }

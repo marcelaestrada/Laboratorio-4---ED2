@@ -33,7 +33,7 @@ namespace Laboratorio4ED2.Controllers
                     while (reader.Peek() >= 0)
                         texto.AppendLine(await reader.ReadLineAsync());
                 }
-                compresorLZW.Comprimir(texto.ToString(), file.FileName, name, nombre);
+                compresorLZW.Comprimir(texto.ToString(), file.FileName, name+".lzw", nombre);
                 documento.WriteLine(compresorLZW.Archivo());
                 string fileType = "text/plain";
                
@@ -41,7 +41,7 @@ namespace Laboratorio4ED2.Controllers
                 //documento.Close();
                 return fileResult;
 
-                // return StatusCode(201);
+                
             }
             catch(Exception e)
             {
@@ -63,7 +63,7 @@ namespace Laboratorio4ED2.Controllers
 
 
                 string textoDescomprimido = compresorLZW.Descomprimir(rd.ReadToEnd());
-                string nombreOriginal = ""; /*descompresor.NombreOriginal();*/
+                string nombreOriginal = compresorLZW.NombreOriginal(nombre); 
                 string fileType = "text/plain";
                 var fileResult = File(fileRecuperado, fileType, nombreOriginal);
                 return fileResult;

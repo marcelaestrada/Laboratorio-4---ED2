@@ -16,7 +16,7 @@ namespace Laboratorio4ED2
 
         public override string ToString()
         {
-            return $"{NombreOriginal},{NombreComprimido},{RutaF},${RazonCompresion.ToString()},${FactorCompresion.ToString()},${PorcentajeReduccion.ToString()}";
+            return $"{NombreOriginal},{NombreComprimido},{RutaF},{RazonCompresion},{FactorCompresion},{PorcentajeReduccion}";
         }
     }
 }
