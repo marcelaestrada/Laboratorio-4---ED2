@@ -8,4 +8,4 @@ Algoritmo de compresión LZW
 **Comentarios** 
 * La descompresión tarda un poco. 
 * Al momento de comprimir algo, si se copia el texto de algunas páginas, las tildes las reconoce como "�", según lo investigado es porque los archivos probablemente se crearon con codificación utf-8. Estos signos provocan un error al momento de crear el diccionario, con tildes normales si funciona bien.
-* Los archivos con extención .lzw se guardan en la carpeta del proyecto de librería. 
+* Los archivos que se devuelven se guardan en la carpeta del proyecto de librería igualmente. 
