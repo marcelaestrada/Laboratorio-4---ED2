@@ -217,6 +217,7 @@ namespace CompresorLZW.Estructuras
                 {
                     var array = linea.Split("|");
                     retorno = array[0];
+                    break;
                 }
             }
 
