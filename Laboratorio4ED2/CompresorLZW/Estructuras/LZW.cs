@@ -1,8 +1,10 @@
 ﻿using CompresorLZW.Interfaz;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace CompresorLZW.Estructuras
@@ -11,7 +13,7 @@ namespace CompresorLZW.Estructuras
     {
         Compresor compresor = new Compresor();
         Dictionary<string, int> original = new Dictionary<string, int>();
-        List<DatosCompresion> listaJSON = new List<DatosCompresion>();
+        List<string> listaJSON = new List<string>();
         string resultado = "";
         string nombreOriginal;
         string nombreComprimido;
@@ -67,7 +69,7 @@ namespace CompresorLZW.Estructuras
             return resultado;
         }
 
-        public string Archivo(string nombre)
+        public string Archivo()
         {
             string lineaArchivo = "";
             int caracteres = original.Count;
@@ -142,21 +144,35 @@ namespace CompresorLZW.Estructuras
 
         public void llenarJSON()
         {
-            DatosCompresion datos = new DatosCompresion();
-            datos.nombreOriginal = nombreOriginal;
-            datos.nombreComprimido = nombreComprimido;
-            datos.rutaComprimido = rutaf;
-            datos.razonCompresion = Decimal.Divide(bytesComprimido, bytesOriginal);
-            datos.factorCompresion = decimal.Divide(bytesOriginal, bytesComprimido);
-            datos.porcentajeCompresion = datos.razonCompresion * 100;
-            listaJSON.Add(datos);
-        }
+            string nombre = $"./compresiones.txt";
+            FileStream filestream = new FileStream(nombre, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            StreamReader rd = new StreamReader(filestream);
+            StreamWriter documento = new StreamWriter(filestream);
+            string recuperado = "";
 
-        public string JSONCompresiones()
-        {
-            string jsons = "";
-            jsons = JsonSerializer.Serialize(listaJSON);
-            return jsons;
+            listaJSON.Add(nombreOriginal);
+            listaJSON.Add(nombreComprimido);
+            listaJSON.Add(rutaf);
+            listaJSON.Add(Convert.ToString(Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal),2)));
+            listaJSON.Add(Convert.ToString(Math.Round(Decimal.Divide(bytesOriginal, bytesComprimido),2)));
+            listaJSON.Add(Convert.ToString(Math.Round(Decimal.Divide(bytesComprimido, bytesOriginal) * 100,2)));
+
+            if (rd.ReadToEnd() != null)
+            {
+                recuperado = rd.ReadToEnd();
+                foreach (var item in listaJSON)
+                {
+                    documento.WriteLine(item);
+                }
+            }
+            else
+            {
+                foreach(var item in listaJSON)
+                {
+                    documento.WriteLine(item);
+                }
+            }
+            documento.Close();
         }
     }
 }

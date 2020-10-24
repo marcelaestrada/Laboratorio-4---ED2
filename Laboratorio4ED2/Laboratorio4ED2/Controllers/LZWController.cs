@@ -32,7 +32,7 @@ namespace Laboratorio4ED2.Controllers
                         texto.AppendLine(await reader.ReadLineAsync());
                 }
                 compresorLZW.Comprimir(texto.ToString(), file.FileName, name, nombre);
-                documento.WriteLine(compresorLZW.Archivo(nombreOriginal));
+                documento.WriteLine(compresorLZW.Archivo());
                 string fileType = "text/plain";
                
                 var fileResult = File(filestream, fileType, nombre);
