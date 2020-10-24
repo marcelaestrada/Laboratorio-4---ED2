@@ -11,13 +11,12 @@ namespace CompresorLZW.Estructuras
         Compresor compresor = new Compresor();
         Dictionary<string, int> original = new Dictionary<string, int>();
         string resultado = "";
+        string nombreOriginal;
         int minBitesMayor = 0;
         int ceros = 0;
 
         public string Comprimir(string cadena)
         {
-           
-            //cadena = cadena.Replace("\r\n", "\n");
             string comprimido = "";
             string cadenaCeros = "";
             List<int> mensajeNumeros = new List<int>();
@@ -57,7 +56,7 @@ namespace CompresorLZW.Estructuras
             return resultado;
         }
 
-        public string Archivo()
+        public string Archivo(string nombre)
         {
             string lineaArchivo = "";
             int caracteres = original.Count;
@@ -78,8 +77,6 @@ namespace CompresorLZW.Estructuras
 
         public string Descomprimir(string comprimido)
         {
-            // System.Text.ASCIIEncoding codificador = new System.Text.ASCIIEncoding();
-            //byte[] bytesLinea = codificador.GetBytes(comprimido);
             List<int> bytesLinea = new List<int>();
             foreach (var item in comprimido)
             {
@@ -95,11 +92,12 @@ namespace CompresorLZW.Estructuras
             string cadenaOriginal = "";
             string binario = "";
             string cadena = "";
+            string nombreOriginal = "";
             int ceros = bytesLinea[0];
             int caracteres = bytesLinea[1];
             int bites = bytesLinea[2];
 
-            for (int i = 3; i <= caracteres+2; i++)
+            for (int i = 3; i <= caracteres +2; i++) 
             {
                 cadenaOriginal += Convert.ToChar(bytesLinea[i]);
             }
@@ -130,6 +128,11 @@ namespace CompresorLZW.Estructuras
 
             return descompresor.reconstruirDic(diccionarioRecuperado, numeros);
 
+        }
+
+        public string NombreOriginal()
+        {
+            return nombreOriginal;
         }
     }
 }

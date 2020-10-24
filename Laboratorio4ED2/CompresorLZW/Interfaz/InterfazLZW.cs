@@ -7,7 +7,8 @@ namespace CompresorLZW.Interfaz
     interface InterfazLZW
     {
         string Comprimir(string cadena);
-        string Archivo();
+        string Archivo(string nombre);
+        string NombreOriginal();
         string Descomprimir(string cadena);
     }
 }
